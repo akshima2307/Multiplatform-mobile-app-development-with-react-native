@@ -18,7 +18,7 @@ const MenuNavigator = createStackNavigator({
         initialRouteName: 'Menu',
         navigationOptions: {
             headerStyle: {
-                backgroundColor: "#512DAB"
+                backgroundColor: "#512DA8"
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -34,7 +34,7 @@ const HomeNavigator = createStackNavigator({
     {
         navigationOptions: {
             headerStyle: {
-                backgroundColor: "#512DAB"
+                backgroundColor: "#512DA8"
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
