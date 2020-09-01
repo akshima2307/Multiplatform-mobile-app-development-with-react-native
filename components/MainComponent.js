@@ -1,8 +1,9 @@
 import React , { Component} from 'react';
 import { View, Platform } from 'react-native';
 import { Image, StyleSheet } from 'react-native';
-import { Text, ScrollView, SafeAreaView } from 'react-native';
-import {  createAppContainer   } from 'react-navigation';
+import { Text, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {  createAppContainer , SafeAreaView   } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 
@@ -14,6 +15,24 @@ import Contact from './ContactUsComponent';
 
 import { Icon } from 'react-native-elements';
 
+import { connect } from 'react-redux';
+import { fetchDishes, fetchPromos, fetchComments, fetchLeaders } from '../redux/ActionCreators';
+
+const mapStateToProps = state => {
+  return {
+        dishes: state.dishes,
+        comments: state.comments,
+        promotions: state.promotions,
+        leaders: state.leaders
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchPromos: () => dispatch(fetchPromos()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchLeaders: () => dispatch(fetchLeaders())
+})
 
 
 const MenuNavigator = createStackNavigator({
@@ -100,19 +119,23 @@ const ContactNavigator = createStackNavigator({
 
 const CustomDrawerContentComponent = (props) => (
     <ScrollView>
-      <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
-        <View style={styles.drawerHeader}>
-          <View style={{flex:1}}>
-          <Image source={require('./images/logo.png')} style={styles.drawerImage} />
-          </View>
-          <View style={{flex: 2}}>
-            <Text style={styles.drawerHeaderText}>Ristorante Con Fusion</Text>
-          </View>
-        </View>
-        <DrawerItems {...props} />
-      </SafeAreaView>
+        <SafeAreaView style = {styles.container}
+            forceInset = {{ top: 'always', horizontal: 'never'}}>
+            <View style = {styles.drawerHeader}>
+                <View style = {{flex: 1}}>
+                    <Image source = {require('./images/logo.png')}
+                        style = {styles.drawerImage} />
+                </View>
+                <View style = {{flex: 2}}>
+                    <Text style = {styles.drawerHeaderText}>
+                        Ristorante Con Fusion
+                    </Text>
+                </View>
+            </View>
+            <DrawerItems {...props} />
+        </SafeAreaView>
     </ScrollView>
-  );
+);
 
 
 
@@ -120,77 +143,81 @@ const CustomDrawerContentComponent = (props) => (
     Home:
       { screen: HomeNavigator,
         navigationOptions: {
-        title: 'Home',
-        drawerLabel: 'Home',
-        drawerIcon: ({ tintColor }) => (
-          <Icon
-          name='home'
-          type='font-awesome'
-          size={24}
-          color={tintColor}
-            />
-        )
-      }
-    },
-    Menu:
-      { screen: MenuNavigator,
-        navigationOptions: {
-        title: 'Menu',
-        drawerLabel: 'Menu',
-        drawerIcon: ({ tintColor, focused }) => (
-          <Icon
-            name='list'
-            type='font-awesome'
-            size={24}
-            color={tintColor}
-              />
-        ),
-      },
-    },
-    Contact:
-      {
-        screen: ContactNavigator,
-        navigationOptions: {
-          title: 'Contact Us',
-          drawerLabel: 'Contact Us',
-          drawerIcon: ({ tintColor, focused }) => (
-            <Icon
-            name='address-card'
-            type='font-awesome'
-            size={22}
-            color={tintColor}
-              />
-          ),
+          title: 'Home',
+          drawerLabel: 'Home',
+          drawerIcon : ({ tintColor }) => (
+              <Icon
+                name = 'home'
+                type = "font-awesome"
+                size = {24}
+                color = {tintColor}
+                />
+          )
         }
       },
       About:
-        {
+      {
           screen: AboutNavigator,
           navigationOptions: {
-          title: 'About Us',
-          drawerLabel: 'About Us',
-          drawerIcon: ({ tintColor, focused }) => (
-            <Icon
-            name='info-circle'
-            type='font-awesome'
-            size={24}
-            color={tintColor}
-            />
-          ),
-        }
+              title: 'About',
+              drawerLabel: 'About Us',
+              drawerIcon : ({ tintColor }) => (
+                  <Icon
+                    name = 'info-circle'
+                    type = "font-awesome"
+                    size = {24}
+                    color = {tintColor}
+                    />
+              )
+          }
+      },
+    Menu:
+      { screen: MenuNavigator,
+        navigationOptions: {
+          title: 'Menu',
+          drawerLabel: 'Menu',
+          drawerIcon : ({ tintColor }) => (
+              <Icon
+                name = 'list'
+                type = "font-awesome"
+                size = {24}
+                color = {tintColor}
+                />
+          )
+        },
+      },
+    Contact:
+      {
+          screen: ContactNavigator,
+          navigationOptions: {
+              title: 'Contact Us',
+              drawerLabel: 'Contact Us',
+              drawerIcon : ({ tintColor }) => (
+                  <Icon
+                    name = 'address-card'
+                    type = "font-awesome"
+                    size = {22}
+                    color = {tintColor}
+                    />
+              )
+          }
       }
 }, {
   drawerBackgroundColor: '#D1C4E9',
   contentComponent: CustomDrawerContentComponent
 });
 
-
 const MainNavigatorApp  = createAppContainer(MainNavigator);
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
+
+  componentDidMount(){
+    this.props.fetchDishes();
+    this.props.fetchPromos();
+    this.props.fetchComments();
+    this.props.fetchLeaders();
   }
+
   render() {
     return (
         <View style={{flex:1, paddingTop:0 }}>
@@ -226,4 +253,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

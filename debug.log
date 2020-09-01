@@ -8,3 +8,4 @@
 [0820/014326.260:ERROR:exception_snapshot_win.cc(98)] thread ID 43976 not found in process
 [0820/014326.276:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
 [0820/014326.276:ERROR:exception_snapshot_win.cc(98)] thread ID 13528 not found in process
+[0901/152706.015:ERROR:file_io.cc(135)] WriteFile: The pipe is being closed. (0xE8)

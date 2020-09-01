@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var baseUrl = 'http://localhost:3001/';","map":{"version":3,"sources":["C:/Users/User/Desktop/ReactNative/NewProject/shared/baseUrl.js"],"names":["baseUrl"],"mappings":"AAAA,OAAO,IAAMA,OAAO,GAAG,wBAAhB","sourcesContent":["export const baseUrl = 'http://localhost:3001/' ;\r\n"]},"metadata":{},"sourceType":"module"}
