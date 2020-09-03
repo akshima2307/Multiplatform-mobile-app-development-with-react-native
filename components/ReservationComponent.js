@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
+import * as Animatable from 'react-native-animatable';
 
 class Reservation extends Component {
 
@@ -25,7 +26,15 @@ class Reservation extends Component {
 
   handleReservation() {
     console.log(JSON.stringify(this.state));
-    this.toggleModal();
+    Alert.alert(
+      'Your Reservation OK?',
+      'Number of Guests: ' + this.state.guests + '\nSmoking? ' + this.state.smoking + '\nDate and Time: ' + this.state.date,
+      [
+        {text: 'Cancel', onPress: () => this.resetForm(), style: 'cancel'},
+        {text: 'OK', onPress: () => this.resetForm()},
+      ],
+      { cancelable: false }
+    );
   }
 
   resetForm(){
@@ -39,6 +48,7 @@ class Reservation extends Component {
   render(){
     return(
       <ScrollView>
+      <Animatable.View animation="zoomIn" duration={2000}>
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Number of Guest</Text>
           <Picker
@@ -92,10 +102,12 @@ class Reservation extends Component {
           <Button
             title = 'Reserve'
             color = '#512DA8'
-            onPress = {() => this.handleReservation()}
+            onPress = {() =>  this.handleReservation() }
+
             accessibilityLabel = 'Learn more..'
             />
         </View>
+        </Animatable.View>
         <Modal
 
           animationType={'slide'}
